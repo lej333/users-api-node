@@ -1,9 +1,9 @@
 const Boom = require('@hapi/boom');
 
-const MongoDb = require('../../helpers/mongoDb');
+const MongoDb = require('../helpers/mongoDb');
 const Schema = require('./users.model');
-const Security = require('../../helpers/security');
-const Messages = require('../../messages');
+const Security = require('../helpers/security');
+const Messages = require('../messages');
 
 /*
 * Authenticate login of one user by its username and password.

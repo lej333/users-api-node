@@ -102,3 +102,13 @@ dist
 
 # TernJS port file
 .tern-port
+
+credentials.test.json.enc
+# Node schluessel credentials keys
+.idea/
+
+*.key
+credentials.development.json.enc
+credentials.development.key
+credentials.test.json.enc
+credentials.test.key

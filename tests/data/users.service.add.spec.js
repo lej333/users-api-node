@@ -7,11 +7,11 @@ process.env.NODE_ENV = 'test';
 const Chai = require('chai');
 const Assert = Chai.assert;
 
-const Init = require('../../../../src');
-const Users = require('../../../../src/lib/data/users/users.service');
-const CleanTests = require('../cleanTests');
-const ErrorTests = require('../errorTests');
-const Messages = require('../../../../src/lib/messages');
+const Init = require('../../src');
+const Users = require('../../src/lib/data/users.service');
+const CleanTests = require('./cleanTests');
+const ErrorTests = require('./errorTests');
+const Messages = require('../../src/lib/messages');
 
 describe('lib/data/users/users.service.add', () => {
 

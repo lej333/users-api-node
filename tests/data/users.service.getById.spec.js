@@ -10,15 +10,15 @@ const Boom = require('@hapi/boom');
 const assert = require('assert');
 const _ = require('lodash');
 
-const MongoDb = require('../../../../src/lib/helpers/mongoDb');
-const Init = require('../../../../src');
-const Users = require('../../../../src/lib/data/users/users.service');
-const Schema = require('../../../../src/lib/data/users/users.model');
+const MongoDb = require('../../src/lib/helpers/mongoDb');
+const Init = require('../../src');
+const Users = require('../../src/lib/data/users.service');
+const Schema = require('../../src/lib/data/users.model');
 
-const Security = require('../../../../src/lib/helpers/security');
-const CleanTests = require('../cleanTests');
-const ErrorTests = require('../errorTests');
-const Messages = require('../../../../src/lib/messages');
+const Security = require('../../src/lib/helpers/security');
+const CleanTests = require('./cleanTests');
+const ErrorTests = require('./errorTests');
+const Messages = require('../../src/lib/messages');
 
 describe('lib/data/users/users.service.getById', () => {
 
