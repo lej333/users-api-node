@@ -8,12 +8,12 @@ const Boom = require('@hapi/boom');
 const assert = require('assert');
 const _ = require('lodash');
 
-const Init = require('../../src');
-const Users = require('../../src/lib/data/users.service');
-const Schema = require('../../src/lib/data/users.model');
-const Security = require('../../src/lib/helpers/security');
-const CleanTests = require('./cleanTests');
-const MongoDb = require('../../src/lib/helpers/mongoDb');
+const Init = require('../../../src');
+const Users = require('../../../src/lib/data/users.service');
+const Schema = require('../../../src/lib/data/users.model');
+const Security = require('../../../src/lib/helpers/security');
+const CleanTests = require('./helpers/cleanTests');
+const MongoDb = require('../../../src/lib/helpers/mongoDb');
 
 describe('lib/data/users/users.service.authenticate', () => {
 

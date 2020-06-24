@@ -10,17 +10,17 @@ const Boom = require('@hapi/boom');
 const assert = require('assert');
 const _ = require('lodash');
 
-const Init = require('../../src');
-const Users = require('../../src/lib/data/users.service');
-const Schema = require('../../src/lib/data/users.model');
+const MongoDb = require('../../../src/lib/helpers/mongoDb');
+const Init = require('../../../src');
+const Users = require('../../../src/lib/data/users.service');
+const Schema = require('../../../src/lib/data/users.model');
 
-const Security = require('../../src/lib/helpers/security');
-const CleanTests = require('./cleanTests');
-const ErrorTests = require('./errorTests');
-const Messages = require('../../src/lib/messages');
-const MongoDb = require('../../src/lib/helpers/mongoDb');
+const Security = require('../../../src/lib/helpers/security');
+const CleanTests = require('./helpers/cleanTests');
+const ErrorTests = require('./helpers/errorTests');
+const Messages = require('../../../src/lib/messages');
 
-describe('lib/data/users/users.service.deleteById', () => {
+describe('lib/data/users/users.service.getById', () => {
 
   const Db = MongoDb.db(Schema);
 
@@ -36,29 +36,25 @@ describe('lib/data/users/users.service.deleteById', () => {
 
   before(async () => {
     await CleanTests.cleanUser(user.username);
-    await create();
-  });
-
-  after(async () => {
-    await CleanTests.cleanUser(user.username);
-  });
-
-  const create = async () => {
     user.hash = Security.createHash('testing');
     const result = await Db.add(user, null, Schema);
     if (result) {
       userId = result._id.toString();
     }
     delete user.hash;
-  }
+  });
 
-  it('deleteById', async () => {
+  after(async () => {
+    await CleanTests.cleanUser(user.username);
+  });
+
+  it('getById', async () => {
     const auth = {
       id: 'this-is-an-user-id',
       firstName: 'User',
       admin: true
     }
-    const result = await Users.deleteById(auth, userId);
+    const result = await Users.getById(auth, userId);
     assert.equal(_.isObject(result), true, 'Must return an object value');
     assert.equal(!_.isEmpty(result._id), true, 'Contains expected fields: id. This field is added by MongoDB.');
     assert.equal(!_.isEmpty(result.username), true, 'Contains expected fields: username');
@@ -66,92 +62,91 @@ describe('lib/data/users/users.service.deleteById', () => {
     return true;
   });
 
-  it('deleteById as non-admin', async () => {
+  it('getById as non-admin', async () => {
     const auth = {
       id: 'this-is-an-user-id',
       firstName: 'User',
       admin: false
     }
-    return Users.deleteById(auth, userId).then((result) => {
+    return Users.getById(auth, userId).then((result) => {
       throw 'We expected an error!';
     }).catch((err) => {
-      return ErrorTests.error(err, Messages.deletePermissionDenied);
+      return ErrorTests.error(err, Messages.getPermissionDenied);
     });
   });
 
-  it('deleteById as non-admin with same id', async () => {
-    await create();
+  it('getById as non-admin with same id', async () => {
     const auth = {
       id: userId,
       firstName: 'User',
       admin: false
     }
-    const result = await Users.deleteById(auth, userId);
+    const result = await Users.getById(auth, userId);
     assert.equal(_.isObject(result), true, 'Must return an object value');
     assert.equal(!_.isEmpty(result._id), true, 'Contains expected fields: id. This field is added by MongoDB.');
     assert.equal(!_.isEmpty(result.username), true, 'Contains expected fields: username');
     assert.equal(_.isEmpty(result.hash), true, 'May not return the hash field');
   });
 
-  it('deleteById without admin in the auth token', async () => {
+  it('getById without admin in the auth token', async () => {
     const auth = {
       id: 'this-is-an-user-id',
       firstName: 'User'
     }
-    return Users.deleteById(auth, userId).then((result) => {
+    return Users.getById(auth, userId).then((result) => {
       throw 'We expected an error!';
     }).catch((err) => {
-      return ErrorTests.error(err, Messages.deletePermissionDenied);
+      return ErrorTests.error(err, Messages.getPermissionDenied);
     });
   });
 
-  it('deleteById with null admin property', async () => {
+  it('getById with null admin property', async () => {
     const auth = {
       id: 'this-is-an-user-id',
       firstName: 'User',
       admin: null
     }
-    return Users.deleteById(auth, userId).then((result) => {
+    return Users.getById(auth, userId).then((result) => {
       throw 'We expected an error!';
     }).catch((err) => {
-      return ErrorTests.error(err, Messages.deletePermissionDenied);
+      return ErrorTests.error(err, Messages.getPermissionDenied);
     });
   });
 
-  it('deleteById without userId', async () => {
+  it('getById without userId', async () => {
     const auth = {
       id: 'this-is-an-user-id',
       firstName: 'User',
       admin: true
     }
-    return Users.deleteById(auth, null).then((result) => {
+    return Users.getById(auth, null).then((result) => {
       throw 'We expected an error!';
     }).catch((err) => {
       return ErrorTests.error(err, Messages.idNotValid);
     });
   });
 
-  it('deleteById with non-existing user', async () => {
+  it('getById with non-existing user', async () => {
     const auth = {
       id: 'this-is-an-user-id',
       firstName: 'User',
       admin: true
     }
     const nonExist = Mongoose.Types.ObjectId();
-    return Users.deleteById(auth, nonExist).then(() => {
+    return Users.getById(auth, nonExist).then((result) => {
       throw 'We expected an error!';
     }).catch((err) => {
       return ErrorTests.error(err, Messages.getNotFound);
     });
   });
 
-  it('deleteById with non-objectID value', async () => {
+  it('getById with non-objectID value', async () => {
     const auth = {
       id: 'this-is-an-user-id',
       firstName: 'User',
       admin: true
     }
-    return Users.deleteById(auth, 'non-object-id').then((result) => {
+    return Users.getById(auth, 'non-object-id').then((result) => {
       throw 'We expected an error!';
     }).catch((err) => {
       return ErrorTests.error(err, Messages.idNotValid);

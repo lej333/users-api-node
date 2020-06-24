@@ -1,5 +1,5 @@
-const UserSchema = require('../../src/lib/data/users.model');
-const MongoDb = require('../../src/lib/helpers/mongoDb');
+const UserSchema = require('../../../../src/lib/data/users.model');
+const MongoDb = require('../../../../src/lib/helpers/mongoDb');
 
 const cleanUser = async (username) => {
   const search = {

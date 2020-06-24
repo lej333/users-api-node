@@ -14,6 +14,6 @@ module.exports = {
   },
   handler: function (request, h) {
     const user = request.auth.credentials;
-    return `Hi ${user.firstName} [${user.id}], this is a fine authorization token!`;
+    return `Hi ${user.contactName} [${user.id}], this is a fine authorization token!`;
   }
 };

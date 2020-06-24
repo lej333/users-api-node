@@ -10,14 +10,14 @@ const assert = require('assert');
 const _ = require('lodash');
 const Vault = require('schluessel');
 
-const Init = require('../../src');
+const Init = require('../../../src');
 const Users = require('../../src/lib/data/users/users.service');
 const Schema = require('../../src/lib/data/users/users.model');
-const Security = require('../../src/lib/helpers/security');
-const CleanTests = require('./cleanTests');
-const ErrorTests = require('./errorTests');
-const Messages = require('../../src/lib/messages');
-const MongoDb = require('../../src/lib/helpers/mongoDb');
+const Security = require('../../../src/lib/helpers/security');
+const CleanTests = require('./helpers/cleanTests');
+const ErrorTests = require('./helpers/errorTests');
+const Messages = require('../../../src/lib/messages');
+const MongoDb = require('../../../src/lib/helpers/mongoDb');
 
 describe('lib/data/users/users.service.updateById', () => {
 
