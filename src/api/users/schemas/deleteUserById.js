@@ -1,4 +1,4 @@
-// params validation for postCustomer
+// params validation for deleteUserById
 
 const Joi = require('@hapi/joi');
 

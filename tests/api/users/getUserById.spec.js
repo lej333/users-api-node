@@ -17,7 +17,7 @@ Chai.use(ChaiHttp);
 const Uri = `http://${Config.server.host}:${Config.server.port}`;
 const Path = '/hello';
 
-describe('api/default/getHello', () => {
+describe('api/users/getUserById', () => {
 
   let server = null;
   before(async () => {

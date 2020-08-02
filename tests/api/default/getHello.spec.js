@@ -6,10 +6,11 @@ process.env.NODE_ENV = 'test';
 const _ = require('lodash');
 const Chai = require('chai');
 const ChaiHttp = require('chai-http');
+const Vault = require('schluessel');
 
 const Server = require('../../../src/index');
 const Config = require('../../../src/lib/config');
-const Security = require('../../../src/lib/helpers/security');
+const Security = require('swalbe-library').Security;
 
 const Should = Chai.should();
 Chai.use(ChaiHttp);
@@ -32,7 +33,7 @@ describe('api/default/getHello', () => {
       companyName: 'Swalbe',
       admin: true
     }
-    const token = Security.createToken(object);
+    const token = Security.createToken(object, Vault.authKey);
 
     return await Chai.request(Uri)
       .get(Path)
@@ -63,7 +64,7 @@ describe('api/default/getHello', () => {
     const object = {
       notanid: 'user-id'
     }
-    const token = Security.createToken(object);
+    const token = Security.createToken(object, Vault.authKey);
 
     return await Chai.request(Uri)
       .get(Path)
