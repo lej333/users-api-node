@@ -11,8 +11,8 @@ const _ = require('lodash');
 const Vault = require('schluessel');
 
 const Init = require('../../../src');
-const Users = require('../../src/lib/data/users/users.service');
-const Schema = require('../../src/lib/data/users/users.model');
+const Users = require('../../../src/lib/data/users.service');
+const Schema = require('../../../src/lib/data/users.model');
 const Security = require('../../../src/lib/helpers/security');
 const CleanTests = require('./helpers/cleanTests');
 const ErrorTests = require('./helpers/errorTests');

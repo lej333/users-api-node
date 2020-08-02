@@ -1,8 +1,8 @@
 const Boom = require('@hapi/boom');
-
+const Vault = require('schluessel');
 const MongoDb = require('../helpers/mongoDb');
 const Schema = require('./users.model');
-const Security = require('../helpers/security');
+const Security = require('swalbe-library').Security;
 const Messages = require('../messages');
 
 /*
@@ -21,7 +21,7 @@ async function authenticate(username, password) {
     return Promise.reject(Boom.forbidden(Messages.loginFailed));
   }
   user = user[0];
-  if (Security.createHash(password) !== user.hash) {
+  if (Security.createHash(password, Vault.cryptoKey) !== user.passwordHash) {
     return Promise.reject(Boom.forbidden(Messages.loginFailed));
   }
 
@@ -30,7 +30,7 @@ async function authenticate(username, password) {
     id: user.id,
     firstName: user.firstName,
     admin: user.admin
-  });
+  }, Vault.authKey);
 
   return {
     ...userWithoutHash,
@@ -51,7 +51,7 @@ async function list(auth) {
     creationDate: -1
   };
   const Db = MongoDb.db(Schema);
-  return await Db.search(null, sort, '-hash');
+  return await Db.search(null, sort, '-passwordHash');
 }
 
 /*
@@ -64,7 +64,7 @@ async function getById(auth, userId) {
   }
 
   const Db = MongoDb.db(Schema);
-  const user = await Db.getById(userId, '-hash');
+  const user = await Db.getById(userId, '-passwordHash');
   if (!user) {
     return Promise.reject(Boom.notFound(Messages.getNotFound));
   }
@@ -95,8 +95,8 @@ async function add(auth, user) {
   }
 
   user.creationUserId = auth.id;
-  user.hash = Security.createHash(user.password);
-  return await Db.add(user, '-hash');
+  user.passwordHash = Security.createHash(user.password, Vault.cryptoKey);
+  return await Db.add(user, '-passwordHash');
 }
 
 /*
@@ -130,12 +130,12 @@ async function updateById(auth, userId, user) {
     if (!Security.validatePassword(user.password)) {
       return Promise.reject(Boom.badData(Messages.weakPassword));
     }
-    current.hash = Security.createHash(user.password);
+    current.passwordHash = Security.createHash(user.password, Vault.cryptoKey);
   }
   current.modifiedDate = Date.now();
   current.modifiedUserId = auth.id;
 
-  return await Db.updateById(userId, current, '-hash');
+  return await Db.updateById(userId, current, '-passwordHash');
 }
 
 /*
@@ -149,7 +149,7 @@ async function deleteById(auth, userId) {
   await getById(auth, userId);
 
   const Db = MongoDb.db(Schema);
-  return await Db.deleteById(userId, '-hash');
+  return await Db.deleteById(userId, '-passwordHash');
 }
 
 module.exports = {

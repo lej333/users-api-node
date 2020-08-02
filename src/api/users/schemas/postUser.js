@@ -1,4 +1,4 @@
-// params validation for putUser
+// params validation for postUser
 
 const Joi = require('@hapi/joi');
 

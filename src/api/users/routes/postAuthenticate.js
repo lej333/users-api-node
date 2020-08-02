@@ -3,7 +3,7 @@
  * Returns user object, instead of hashed password it will return authorization token.
  */
 
-const Users = require('../../../lib/data/users/users.service');
+const Users = require('../../../lib/data/users.service');
 const Schema = require('../schemas/postAuthenticate');
 const Logger = require('../../../lib/logger');
 

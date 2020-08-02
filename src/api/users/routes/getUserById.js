@@ -3,7 +3,7 @@
  * Returns a complete user object without hashed password.
  */
 
-const Users = require('../../../lib/data/users/users.service');
+const Users = require('../../../lib/data/users.service');
 const Schema = require('../schemas/getUserById');
 const Logger = require('../../../lib/logger');
 

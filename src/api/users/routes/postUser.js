@@ -4,7 +4,7 @@
  * Returns complete user object with hash excluded.
  */
 
-const Users = require('../../../lib/data/users/users.service');
+const Users = require('../../../lib/data/users.service');
 const Schema = require('../schemas/postUser');
 const Logger = require('../../../lib/logger');
 

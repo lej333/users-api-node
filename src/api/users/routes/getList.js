@@ -3,7 +3,7 @@
  * Only allowed for admin users.
  */
 
-const Users = require('../../../lib/data/users/users.service');
+const Users = require('../../../lib/data/users.service');
 const Logger = require('../../../lib/logger');
 
 module.exports = {

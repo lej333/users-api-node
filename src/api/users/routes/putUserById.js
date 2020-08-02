@@ -3,7 +3,7 @@
  * Returns an updated user object.
  */
 
-const Users = require('../../../lib/data/users/users.service');
+const Users = require('../../../lib/data/users.service');
 const Schema = require('../schemas/putUserById');
 const Logger = require('../../../lib/logger');
 
